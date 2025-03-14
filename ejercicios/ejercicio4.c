@@ -1,54 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Crea un tipo de dato estudiante que guarde el nombre del estudiante max. 40 caracteres y su edad
+#define MAX 50
 typedef struct {
-    
+    char nombre[MAX];
+    int edad;
 } Estudiante;
 
 int main() {
+    int size = 2; 
+    Estudiante* estudiantes = (Estudiante*)malloc(size * sizeof(Estudiante)); // Reserva memoria para los estudiantes
 
-    int size = 2;
-    // Crea un arreglo dinámico usando malloc de tamaño size
-    
-    //Si el arreglo es nulo imprime el mensaje
-    if ( == NULL) {
+    if (estudiantes == NULL) {
         printf("Error: No se pudo asignar memoria.\n");
         return 1;
     }
 
-    int count = 0;
+    int count = 0; 
     char nombre[50];
     int edad;
+    
     printf("Ingrese estudiantes (nombre y edad, ingrese 'fin' para terminar):\n");
+    
     while (1) {
         printf("Nombre: ");
-        scanf("%s", nombre);
-        if (strcmp(nombre, "fin") == 0) break;
+        scanf("%s", nombre); 
+        if (strcmp(nombre, "fin") == 0) break; 
 
         printf("Edad: ");
-        scanf("%d", &edad);
+        scanf("%d", &edad); 
 
+        
         if (count >= size) {
             size *= 2;
-            //Cambia el tamaño del arreglo
-            //Verifica nuevamente que si apunta a nulo se imprima el error
-            if ( == NULL) {
+            estudiantes = (Estudiante*)realloc(estudiantes, size * sizeof(Estudiante)); // Realocar memoria
+
+            if (estudiantes == NULL) {
                 printf("Error: No se pudo reasignar memoria.\n");
                 return 1;
             }
         }
-        //copia el nombre leido en el nuevo estudiante y su edad
-        
-        count++;
+
+        strcpy(estudiantes[count].nombre, nombre);
+        estudiantes[count].edad = edad;
+
+        count++; 
     }
 
-    printf("Lista de estudiantes:\n");
+    printf("\nLista de estudiantes:\n");
     for (int i = 0; i < count; i++) {
-        
+        printf("Nombre: %s, Edad: %d\n", estudiantes[i].nombre, estudiantes[i].edad);
     }
 
-    //libera la memoria
+    free(estudiantes);
+
     return 0;
 }
